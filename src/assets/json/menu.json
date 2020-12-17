@@ -1,0 +1,197 @@
+[
+    {
+        "id": "0",
+        "name": "首页",
+        "path": "/home",
+        "icon": "el-icon-s-home",
+        "component": "./views/home.vue",
+        "childTreeDto": null
+    },
+    {
+        "id": "1",
+        "name": "图标库",
+        "path": "/icons",
+        "icon": "el-icon-star-off",
+        "component": "./demo/icons.vue",
+        "childTreeDto": null
+    },
+    {
+        "id": "2",
+        "name": "分页模板",
+        "path": "/page",
+        "icon": "el-icon-reading",
+        "component": "./demo/page.vue",
+        "childTreeDto": null
+    },
+    {
+        "id": "3",
+        "name": "嵌入charts",
+        "path": "/charts",
+        "icon": "el-icon-s-data",
+        "component": "./demo/charts.vue",
+        "childTreeDto": null
+    },
+    {
+        "id": "4",
+        "name": "animate动画库",
+        "path": "/animated",
+        "icon": "el-icon-magic-stick",
+        "component": "./demo/animated.vue",
+        "childTreeDto": null
+    },
+    {
+        "id": "5",
+        "name": "日历",
+        "path": "/calendar",
+        "icon": "el-icon-date",
+        "component": "./demo/calendar.vue",
+        "childTreeDto": null
+    },
+    {
+        "id": "6",
+        "name": "高德地图",
+        "path": "/6",
+        "icon": "el-icon-map-location",
+        "component": "",
+        "childTreeDto": [
+            {
+                "id": "6-1",
+                "name": "地图创建",
+                "path": "/6-1",
+                "icon": "el-icon-map-location",
+                "component": "./demo/map.vue",
+                "childTreeDto": null
+            }
+        ]
+    },
+    {
+        "id": "101",
+        "name": "测试界面101",
+        "path": "/101",
+        "icon": "el-icon-document",
+        "component": "./views/404.vue",
+        "childTreeDto": [
+            {
+                "id": "101-1",
+                "name": "测试界面101-1",
+                "path": "/101-1",
+                "icon": "el-icon-document",
+                "component": "./views/404.vue",
+                "childTreeDto": null
+            },
+            {
+                "id": "101-2",
+                "name": "测试界面101-2",
+                "path": "/101-2",
+                "icon": "el-icon-document",
+                "component": "./views/404.vue",
+                "childTreeDto": null
+            },
+            {
+                "id": "101-3",
+                "name": "测试界面101-3",
+                "path": "/101-3",
+                "icon": "el-icon-document",
+                "component": "./views/404.vue",
+                "childTreeDto": null
+            }
+        ]
+    },
+    {
+        "id": "102",
+        "name": "测试界面102",
+        "path": "/102",
+        "icon": "el-icon-document",
+        "component": "./views/404.vue",
+        "childTreeDto": null
+    },
+    {
+        "id": "103",
+        "name": "测试界面103",
+        "path": "/103",
+        "icon": "el-icon-document",
+        "component": "./views/404.vue",
+        "childTreeDto": [
+            {
+                "id": "103-1",
+                "name": "测试界面103-1",
+                "path": "/103-1",
+                "icon": "el-icon-document",
+                "component": "./views/404.vue",
+                "childTreeDto": null
+            },
+            {
+                "id": "103-2",
+                "name": "测试界面103-2",
+                "path": "/103-2",
+                "icon": "el-icon-document",
+                "component": "./views/404.vue",
+                "childTreeDto": null
+            },
+            {
+                "id": "103-3",
+                "name": "测试界面103-3",
+                "path": "/103-3",
+                "icon": "el-icon-document",
+                "component": "./views/404.vue",
+                "childTreeDto": null
+            }
+        ]
+    },
+    {
+        "id": "104",
+        "name": "测试界面104",
+        "path": "/104",
+        "icon": "el-icon-document",
+        "component": "./views/404.vue",
+        "childTreeDto": null
+    },
+    {
+        "id": "105",
+        "name": "测试界面105",
+        "path": "/105",
+        "icon": "el-icon-document",
+        "component": "./views/404.vue",
+        "childTreeDto": null
+    },
+    {
+        "id": "106",
+        "name": "测试界面106",
+        "path": "/106",
+        "icon": "el-icon-document",
+        "component": "./views/404.vue",
+        "childTreeDto": null
+    },
+    {
+        "id": "107",
+        "name": "测试界面107",
+        "path": "/107",
+        "icon": "el-icon-document",
+        "component": "./views/404.vue",
+        "childTreeDto": null
+    },
+    {
+        "id": "108",
+        "name": "测试界面108",
+        "path": "/108",
+        "icon": "el-icon-document",
+        "component": "./views/404.vue",
+        "childTreeDto": null
+    },
+    {
+        "id": "109",
+        "name": "测试界面109",
+        "path": "/109",
+        "icon": "el-icon-document",
+        "component": "./views/404.vue",
+        "childTreeDto": null
+    },
+    {
+        "id": "110",
+        "name": "测试界面110",
+        "path": "/110",
+        "icon": "el-icon-document",
+        "component": "./views/404.vue",
+        "childTreeDto": null
+    }
+]
