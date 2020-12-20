@@ -1,6 +1,6 @@
 <template>
-  <div class="upload-demo">
-	<el-upload action="#" list-type="picture-card" :auto-upload="false" ref="handle">
+  <!-- <div class="upload-demo">
+	<el-upload action="#" list-type="picture-card" :auto-upload="false" ref="handle" :on-success="handleSuccess" :before-upload="beforeUploadFile">
     <i slot="default" class="el-icon-plus"></i>
     <div slot="file" slot-scope="{file}">
       <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
@@ -21,8 +21,10 @@
 <el-dialog :visible.sync="dialogVisible">
   <img width="100%" :src="dialogImageUrl" alt="">
 </el-dialog>
-</div>
-<!-- <div class="upload-demo">
+</div> -->
+<div class="upload-demo">
+  <el-form :model="form">
+    <el-form-item label="上传文件" :label-width="formLabelWidth">
       <el-upload
         action="https://jsonplaceholder.typicode.com/posts/"
         list-type="picture-card"
@@ -30,15 +32,21 @@
         :on-remove="handleRemove"
         :auto-upload="false"
         :on-progress="handleUpload"
+        :on-success="handleSuccess"
+        :file-list="fileList"
         ref="handle"
         >
-        <i class="el-icon-plus"></i>
+        <i slot="default" class="el-icon-plus"></i>
       </el-upload>
+    </el-form-item>
+    <el-form-item>
       <el-dialog :visible.sync="dialogVisible">
         <img width="100%" :src="dialogImageUrl" alt="">
       </el-dialog>
-      <el-button type="primary" @click="handleUpload">上传</el-button>
-</div> -->
+      <el-button type="primary" @click="uploader">上传</el-button>
+    </el-form-item>
+  </el-form>
+</div>
 </template>
 
 <script>
@@ -47,7 +55,12 @@ export default {
     return {
       dialogImageUrl: '',
       dialogVisible: false,
-      disabled: false
+      disabled: false,
+      fileList: [],
+      form: {
+        file: ''
+      },
+      formLabelWidth: '80px'
     }
   },
   methods: {
@@ -58,8 +71,9 @@ export default {
     //   this.dialogImageUrl = file.url
     //   this.dialogVisible = true
     // },
-    handleUpload (file) {
+    handleUpload (event, file, fileList) {
       let formData = new FormData()
+      console.log('Ada')
       console.log(file.raw)
       formData.append('mpf', file.raw)
       formData.append('uid', 10)
@@ -68,6 +82,12 @@ export default {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
+      })
+    },
+    handleSuccess (res, file, fileList) {
+      this.$notify.success({
+        title: '成功',
+        message: `文件上传成功`
       })
     },
     handleRemove (file, fileList) {
@@ -79,9 +99,19 @@ export default {
       this.dialogVisible = true
     },
     uploader () {
-      console.log(this.$refs.handle)
+      // console.log(this.$refs.handle)
       // this.$refs.handle1.handleUpload()
-      this.$refs.handle.handleUpload()
+      this.$refs.handle.submit()
+      // let formData = new FormData()
+      // formData.append('file', this.form.file)
+      // console.log(this.form.file.raw)
+      // this.$http.post('insertOpinionTest', formData,
+      //   { 'Content-Type': 'multipart/form-data' }
+      // )
+      //   .then(res => {
+      //     console.log('res')
+      //     console.log(res)
+      //   })
     }
   }
 }

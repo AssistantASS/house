@@ -4,8 +4,12 @@
 <!-- 模态框 -->
       <el-dialog :title="dialogTitle"  :visible.sync="dialogFormVisible"  v-show="dialogFormVisible">
         <span>
-          <el-form :inline="true" :model="user" class="demo-form" size="mini" :rules="rules" ref="user">
+          <el-form :inline="true" :model="user" class="demo-form" size="mini"  ref="user">
             <el-divider content-position="left">基本信息</el-divider>
+            <el-form-item label="评论图片：" prop="id_card_picture_f_path"  v-if="user.user">
+              <img style="width: 100px; height: 100px" :src="require('../../assets/imgs/'+user.picture_name)" alt="" >
+            </el-form-item>
+            <br>
             <el-form-item label="用户：" prop="name">
               <!-- <el-input v-if="user.user" v-model="user.user.name"></el-input> -->
               <span v-if="user.user">{{user.user.name}}</span>
@@ -21,6 +25,56 @@
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="close()">取 消</el-button>
           <el-button type="success" @click="addAndUpdateUser('user')">确 定</el-button>
+        </span>
+      </el-dialog>
+        <!-- 测试添加图片 -->
+       <el-dialog :title="dialogTitleTest"  :visible.sync="dialogFormVisibleTest"  v-show="dialogFormVisibleTest">
+        <span>
+          <el-form :inline="true" :model='userTest' class="demo-form" size="mini" :rules="rules" ref="userTest">
+            <el-divider content-position="left">基本信息</el-divider>
+            <el-form-item label="用户id：" prop="user_id">
+              <el-input v-model="userTest.user_id"></el-input>
+              <!-- <span v-if="user.user">{{user.user.name}}</span> -->
+            </el-form-item>
+            <el-form-item label="房子id：" prop="house_id">
+              <el-input v-model="userTest.house_id"></el-input>
+              <!-- <span v-if="user.user">{{user.user.name}}</span> -->
+            </el-form-item>
+            <el-form-item label="评论：" prop="opinion">
+              <el-input v-model="userTest.opinion"></el-input>
+              <!-- <span v-if="user.user">{{user.user.name}}</span> -->
+            </el-form-item>
+            <!-- <el-form-item label="上传图片：" prop="picture">
+              <el-input v-model="userTest.picture"></el-input>
+            </el-form-item> -->
+            <br>
+             <el-form-item label="上传图片" :label-width="formLabelWidth">
+              <el-upload
+                action="https://jsonplaceholder.typicode.com/posts/"
+                list-type="picture-card"
+                :on-preview="handlePictureCardPreview"
+                :on-remove="handleRemove"
+                :auto-upload="false"
+                :on-progress="handleUpload"
+                :on-success="handleSuccess"
+                :file-list="fileList"
+                ref="handle"
+                >
+                <i slot="default" class="el-icon-plus"></i>
+              </el-upload>
+            </el-form-item>
+            <el-form-item>
+              <el-dialog :visible.sync="dialogVisible">
+                <img width="100%" :src="dialogImageUrl" alt="">
+              </el-dialog>
+              <!-- <el-button type="primary" @click="uploader">上传</el-button> -->
+            </el-form-item>
+            <br>
+          </el-form>
+        </span>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="close()">取 消</el-button>
+          <el-button type="success" @click="addUser('userTest')">确 定</el-button>
         </span>
       </el-dialog>
 <!-- 主界面 -->
@@ -40,6 +94,9 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit('xuser')">查询</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="success" @click="add()">添加</el-button>
         </el-form-item>
       </el-form>
       <el-main>
@@ -85,8 +142,20 @@ export default {
       },
       dialogTitle: '',
       dialogFormVisible: false,
+      dialogTitleTest: '',
+      dialogFormVisibleTest: false,
       // 模态框的数据
       user: [],
+      // 添加评论
+      userTest: {
+        file: ''
+      },
+      dialogImageUrl: '',
+      dialogVisible: false,
+      disabled: false,
+      fileList: [],
+      formLabelWidth: '80px',
+
       formInline: {
         user: '',
         region: ''
@@ -186,49 +255,41 @@ export default {
     },
     // 新增用户：
     add () {
-      this.dialogTitle = '录入学生信息'
-      this.dialogFormVisible = true
+      this.dialogTitleTest = '录入评论信息'
+      this.userTest = {}
+      this.dialogFormVisibleTest = true
     },
     addUser (formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          // this.$http.post('students', this.user).then(() => {
-          //   // 清空录入框信息：
-          //   this.user = {}
-          //   // 隐藏录入框：
-          //   this.dialogFormVisible = false
-          //   this.$message({
-          //     message: '录入成功',
-          //     type: 'success'
-          //   })
-          //   this.page.current = 1
-          //   this.pageInation()
-          // })
-          this.$http({
-            url: 'send',
-            method: 'post',
-            params: {
-              email: this.user.email
-            },
-            headers: {
-              'Content-Type': 'application/x-www-form-json'
-            }
-          }).then(() => {
-            this.dialogFormVisible = false
-            this.$message({
-              message: '更新成功',
-              type: 'success'
-            })
-            this.user = {}
-            // this.page.current = 1;
-            this.pageInation()
-          })
-        } else {
-          console.log('error submit!!')
-          this.dialogFormVisible = true
-          return false
-        }
-      })
+      this.dialogFormVisibleTest = false
+      this.$refs.handle.submit()
+      // this.uploader(formName)
+      // this.$refs[formName].validate((valid) => {
+      //   if (valid) {
+      //     this.$http({
+      //       url: 'send',
+      //       method: 'post',
+      //       params: {
+      //         email: this.user.email
+      //       },
+      //       headers: {
+      //         'Content-Type': 'application/x-www-form-json'
+      //       }
+      //     }).then(() => {
+      //       this.dialogFormVisible = false
+      //       this.$message({
+      //         message: '更新成功',
+      //         type: 'success'
+      //       })
+      //       this.user = {}
+      //       // this.page.current = 1;
+      //       this.pageInation()
+      //     })
+      //   } else {
+      //     console.log('error submit!!')
+      //     this.dialogFormVisible = true
+      //     return false
+      //   }
+      // })
     },
     // 修改用户：
     edit (id) {
@@ -352,6 +413,56 @@ export default {
         message: messages,
         type: mtype
       })
+    },
+    handleUpload (event, file, fileList) {
+      let formData = new FormData()
+      console.log(this.userTest.user_id)
+      console.log(this.userTest.house_id)
+      console.log(this.userTest.opinion)
+      console.log(file.raw)
+      formData.append('mpf', file.raw)
+      formData.append('uid', 10)
+      this.$http({
+        url: 'insertOpinion',
+        method: 'post',
+        data: formData,
+        params: {
+          userOpinionDTO: this.userTest
+        },
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      this.pageInation()
+    },
+    handleSuccess (res, file, fileList) {
+      this.$notify.success({
+        title: '成功',
+        message: `图片上传成功`
+      })
+    },
+    handleRemove (file, fileList) {
+      console.log(file, fileList)
+      this.$refs.handle.clearFiles()
+    },
+    handlePictureCardPreview (file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
+    uploader () {
+      // console.log(this.$refs.handle)
+      // this.$refs.handle1.handleUpload()
+      this.$refs.handle.submit()
+      // let formData = new FormData()
+      // formData.append('file', this.form.file)
+      // console.log(this.form.file.raw)
+      // this.$http.post('insertOpinionTest', formData,
+      //   { 'Content-Type': 'multipart/form-data' }
+      // )
+      //   .then(res => {
+      //     console.log('res')
+      //     console.log(res)
+      //   })
     }
   }
 

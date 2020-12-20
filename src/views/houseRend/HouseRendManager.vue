@@ -148,6 +148,16 @@ export default {
             this.userList[k]['housename'] = housename
             console.log(this.userList[k])
           }
+          for (var l = 0; l < this.userList.length; l++) {
+            if (this.userList[l].status === 0) {
+              this.userList[l].status = '待接收'
+            } else if (this.userList[l].status === 1) {
+              this.userList[l].status = '已接收'
+            } else if (this.userList[l].status === 2) {
+              this.userList[l].status = '已完成'
+            }
+            // console.log(this.userList[k])
+          }
           this.currentList = []
           this.loading = false
         })
@@ -171,6 +181,16 @@ export default {
             var housename = this.userList[k].house.province + this.userList[k].house.city + this.userList[k].house.region + this.userList[k].house.address
             this.userList[k]['housename'] = housename
             console.log(this.userList[k])
+          }
+          for (var l = 0; l < this.userList.length; l++) {
+            if (this.userList[l].status === 0) {
+              this.userList[l].status = '待接收'
+            } else if (this.userList[l].status === 1) {
+              this.userList[l].status = '已接收'
+            } else if (this.userList[l].status === 2) {
+              this.userList[l].status = '已完成'
+            }
+            // console.log(this.userList[k])
           }
           this.currentList = []
         } else {
@@ -339,6 +359,8 @@ export default {
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
           // 根据姓名模糊查询：
+          console.log(this.xuser.name)
+          console.log(this.xuser.title)
           this.$http.get('findLookings?name=' + this.xuser.name + '&real_name=' + this.xuser.title).then(res => {
             // console.log(res.data)
             this.page.total = res.data.length

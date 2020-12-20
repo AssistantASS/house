@@ -1,11 +1,11 @@
 <template>
   <div class="dashboard-editor-container">
     <el-menu class="navbar" mode="horizontal">
-      <hamburger
+      <!-- <hamburger
         :toggle-click="toggleSideBar"
         :is-active="sidebar.opened"
         class="hamburger-container"
-      />
+      /> -->
         <!-- :is-active="sidebar.opened" -->
         <Breadcrumb/>
 

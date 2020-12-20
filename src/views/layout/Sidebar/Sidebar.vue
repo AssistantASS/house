@@ -12,8 +12,14 @@
                               <span>{{item.parent.name}}</span>
                           </template>
                           <template v-for="(child,index) in item.children">
-                              <el-menu-item v-if="user.name === null || user.name === '' || user.name === undefined"  @click.native="toLogin" :key="index">{{child.name}}</el-menu-item>
-                              <el-menu-item v-else :index="child.url" :key="child.name">{{child.name}}</el-menu-item>
+                              <el-menu-item v-if="user.name === null || user.name === '' || user.name === undefined"  @click.native="toLogin" :key="index">
+                                  <i :class="child.icon"></i>
+                                  <span>{{child.name}}</span>
+                                </el-menu-item>
+                              <el-menu-item v-else :index="child.url" :key="child.name">
+                                <i :class="child.icon"></i>
+                                <span>{{child.name}}</span>
+                                </el-menu-item>
                               <!-- <el-submenu index="1-1">
                                   <template slot="title">title1-1</template>
                                   <el-menu-item index="1-1-1">title1-1-1</el-menu-item>
@@ -82,15 +88,18 @@ export default {
           children: [
             {
               name: '用户管理',
-              url: '/user/permisson_manager'
+              url: '/user/permisson_manager',
+              icon: 'el-icon-s-custom'
             },
             {
               name: '房东审核',
-              url: '/user/landlord_audit'
+              url: '/user/landlord_audit',
+              icon: 'el-icon-user'
             },
             {
               name: '经纪人审核',
-              url: '/user/agent_audit'
+              url: '/user/agent_audit',
+              icon: 'el-icon-user'
             }
           ]
         },
@@ -102,16 +111,17 @@ export default {
           children: [
             {
               name: '查询约看信息',
-              url: '/houseRend/houseRendMessage'
-            },
-            {
-              name: 'title1-2',
-              url: '/1/1-2'
-            },
-            {
-              name: 'title1-3',
-              url: '/1/1-3'
+              url: '/houseRend/houseRendMessage',
+              icon: 'el-icon-location'
             }
+            // {
+            //   name: 'title1-2',
+            //   url: '/1/1-2'
+            // },
+            // {
+            //   name: 'title1-3',
+            //   url: '/1/1-3'
+            // }
           ]
         },
         {
@@ -122,16 +132,18 @@ export default {
           children: [
             {
               name: '房源信息查询',
-              url: '/houseSource/houseSourceMessage'
+              url: '/houseSource/houseSourceMessage',
+              icon: 'el-icon-house'
             },
             {
               name: '查看房屋评论',
-              url: '/houseSource/comments'
-            },
-            {
-              name: 'title1-3',
-              url: '/houseSource/1-3'
+              url: '/houseSource/comments',
+              icon: 'el-icon-chat-dot-square'
             }
+            // {
+            //   name: 'title1-3',
+            //   url: '/houseSource/1-3'
+            // }
           ]
         }
       ]
@@ -151,16 +163,18 @@ export default {
           children: [
             {
               name: '房源信息查询',
-              url: '/houseSource/houseSourceMessage'
+              url: '/houseSource/houseSourceMessage',
+              icon: 'el-icon-house'
             },
             {
               name: '查看房屋评论',
-              url: '/houseSource/comments'
-            },
-            {
-              name: 'title1-3',
-              url: '/1/1-3'
+              url: '/houseSource/comments',
+              icon: 'el-icon-chat-dot-square'
             }
+            // {
+            //   name: 'title1-3',
+            //   url: '/1/1-3'
+            // }
           ]
         }
       ]
@@ -196,6 +210,7 @@ export default {
 <style>
 .container{
     height: 100%;
+    overflow-x: hidden;
 }
 .scrollbar-wrapper{
     height:100% ;

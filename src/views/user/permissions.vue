@@ -18,13 +18,25 @@
             <!-- <el-form-item label="用户角色：" prop="userRoleName">
               <el-input v-if="user.userRole" v-model="user.userRole.name" placeholder="0-100"></el-input>
             </el-form-item> -->
-            <el-form-item label="用户角色：" prop="userRoleName">
+            <el-form-item label="用户角色：" prop="userRoleName" >
               <el-radio-group v-if="user.userRole" v-model="user.userRole.name">
                 <template v-for="(role,index) in userRoles">
                   <el-radio :label="role.name" :key="index"></el-radio>
                 </template>
               </el-radio-group>
+              <el-radio-group v-model="user.role" v-else>
+                <el-radio label="管理员"></el-radio>
+                <el-radio label="物业管理员"></el-radio>
+                <el-radio label="普通用户"></el-radio>
+              </el-radio-group>
             </el-form-item>
+             <!-- <el-form-item label="用户角色：" prop="userRoleName" v-else>
+              <el-radio-group v-model="user.userRole.name">
+                <el-radio label="管理员"></el-radio>
+                <el-radio label="物业管理员"></el-radio>
+                <el-radio label="普通用户"></el-radio>
+              </el-radio-group>
+            </el-form-item> -->
             <br>
             <el-form-item label="性别：" prop="gender" class="e_radio">
               <el-radio-group v-model="user.gender">
@@ -104,7 +116,14 @@ export default {
       dialogTitle: '',
       dialogFormVisible: false,
       // 模态框的数据
-      user: [],
+      user: {
+        // userRole:
+        //   {
+        //     role_id: '',
+        //     name: ''
+        //   }
+
+      },
       userRoles: [],
       formInline: {
         user: '',
@@ -237,7 +256,7 @@ export default {
     // 录入和修改：
     addAndUpdateUser (formName) {
       this.dialogFormVisible = false
-      if (this.dialogTitle === '录入学生信息') {
+      if (this.dialogTitle === '录入用户信息') {
         this.addUser(formName)
       } else {
         this.ConfirmUpdateUser(this.user_id, formName)
@@ -245,39 +264,44 @@ export default {
     },
     // 新增用户：
     add () {
-      this.dialogTitle = '录入学生信息'
+      this.dialogTitle = '录入用户信息'
+      this.user = {}
       this.dialogFormVisible = true
     },
     addUser (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // this.$http.post('students', this.user).then(() => {
-          //   // 清空录入框信息：
-          //   this.user = {}
-          //   // 隐藏录入框：
-          //   this.dialogFormVisible = false
-          //   this.$message({
-          //     message: '录入成功',
-          //     type: 'success'
-          //   })
-          //   this.page.current = 1
-          //   this.pageInation()
-          // })
+          if (this.user.role === '管理员') {
+            this.user.role_id = 1
+          } else if (this.user.role === '物业管理员') {
+            this.user.role_id = 2
+          } else {
+            this.user.role_id = 4
+          }
+          console.log(this.user)
           this.$http({
-            url: 'send',
+            url: 'insertUser',
             method: 'post',
             params: {
-              email: this.user.email
+              userdto: this.user
             },
             headers: {
               'Content-Type': 'application/x-www-form-json'
             }
-          }).then(() => {
+          }).then((res) => {
+            console.log(res.data)
+            if (res.data === true) {
+              this.$message({
+                message: '添加用户成功',
+                type: 'success'
+              })
+            } else {
+              this.$message({
+                message: '该邮箱或手机号已注册',
+                type: 'error'
+              })
+            }
             this.dialogFormVisible = false
-            this.$message({
-              message: '更新成功',
-              type: 'success'
-            })
             this.user = {}
             // this.page.current = 1;
             this.pageInation()

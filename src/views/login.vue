@@ -9,7 +9,7 @@
         <el-col :xs="{span:18}" :sm="{span:12}" :md="{span:10}" :lg="{span:8}">
             <div class="el_min_login">
             <el-card shadow="always">
-                <h3 style="text-align:left">登录验证</h3>
+                <h3 style="text-align:left">宜居租房系统</h3>
                 <el-divider></el-divider>
                 <el-form :model="ValidateForm" ref="ValidateForm" label-width="100px" class="demo-ruleForm">
                 <!-- 账号 -->
@@ -46,9 +46,9 @@
                 </el-form-item>
                 </el-form>
 
-                <el-row :gutter="24">
+                <!-- <el-row :gutter="24">
                   <el-col :span="14" :offset="10"><el-link type="info" style="text-align:right;" @click="toRegister">还没有账号，立即注册>></el-link></el-col>
-                </el-row>
+                </el-row> -->
             </el-card>
             </div>
         </el-col>

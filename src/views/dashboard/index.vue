@@ -1,6 +1,8 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">Welcome to The LiveHouse!</div>
+    <el-calendar v-model="value">
+    </el-calendar>
   </div>
 </template>
 
@@ -13,6 +15,11 @@ export default {
     // ...mapGetters([
     //   'user'
     // ])
+  },
+  data () {
+    return {
+      value: new Date()
+    }
   }
 }
 </script>
@@ -24,5 +31,6 @@ export default {
 .dashboard-text {
     font-size: 20px;
     line-height: 46px;
+    text-align: center;
   }
 </style>

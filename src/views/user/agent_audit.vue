@@ -236,8 +236,9 @@ export default {
       this.$http.get(`findAgent?user_id=${id}`).then(res => {
         console.log(res.data[0])
         this.user = res.data[0]
-        // this.user.id_card_picture_f = null
-        // this.user.id_card_picture_r = null
+        this.user.photo = null
+        this.user.photo_save_path = null
+        this.user.id_card_picture_r = null
         this.dialogFormVisible = true
       })
     },

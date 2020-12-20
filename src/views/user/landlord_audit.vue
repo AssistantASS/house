@@ -48,6 +48,50 @@
           <el-button type="success" @click="addAndUpdateUser('user')">确 定</el-button>
         </span>
       </el-dialog>
+
+      <!-- 测试房东添加审核 -->
+      <el-dialog :title="dialogTitleTest"  :visible.sync="dialogFormVisibleTest"  v-show="dialogFormVisibleTest">
+        <span>
+          <el-form :inline="true" :model='userTest' class="demo-form" size="mini" :rules="rules" ref="userTest">
+            <el-divider content-position="left">基本信息</el-divider>
+            <el-form-item label="用户id：" prop="user_id">
+              <el-input v-model="userTest.user_id"></el-input>
+              <!-- <span v-if="user.user">{{user.user.name}}</span> -->
+            </el-form-item>
+            <el-form-item label="身份证号码：" prop="id_number">
+              <el-input v-model="userTest.id_number"></el-input>
+              <!-- <span v-if="user.user">{{user.user.name}}</span> -->
+            </el-form-item>
+            <br>
+             <el-form-item label="房东身份证正反面：" :label-width="formLabelWidth">
+              <el-upload
+                action="https://jsonplaceholder.typicode.com/posts/"
+                list-type="picture-card"
+                :on-preview="handlePictureCardPreview"
+                :on-remove="handleRemove"
+                :auto-upload="false"
+                :on-progress="handleUpload"
+                :on-success="handleSuccess"
+                :file-list="fileList"
+                ref="handle"
+                >
+                <i slot="default" class="el-icon-plus"></i>
+              </el-upload>
+            </el-form-item>
+            <el-form-item>
+              <el-dialog :visible.sync="dialogVisible">
+                <img width="100%" :src="dialogImageUrl" alt="">
+              </el-dialog>
+              <!-- <el-button type="primary" @click="uploader">上传</el-button> -->
+            </el-form-item>
+            <br>
+          </el-form>
+        </span>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="close()">取 消</el-button>
+          <el-button type="success" @click="addUser('userTest')">确 定</el-button>
+        </span>
+      </el-dialog>
 <!-- 主界面 -->
       <el-header>
         <!-- <div class="i1"><i class="el-icon-edit">简易学生成绩管理系统</i></div> -->
@@ -110,6 +154,16 @@ export default {
       },
       dialogTitle: '',
       dialogFormVisible: false,
+      dialogTitleTest: '',
+      dialogFormVisibleTest: false,
+      userTest: {
+        file: ''
+      },
+      dialogImageUrl: '',
+      dialogVisible: false,
+      disabled: false,
+      fileList: [],
+      formLabelWidth: '180px',
       // 模态框的数据
       user: [],
       userRoles: [],
@@ -205,7 +259,7 @@ export default {
     // 录入和修改：
     addAndUpdateUser (formName) {
       this.dialogFormVisible = false
-      if (this.dialogTitle === '录入学生信息') {
+      if (this.dialogTitle === '录入房东审核信息') {
         this.addUser(formName)
       } else {
         this.ConfirmUpdateUser(this.user_id, formName)
@@ -213,30 +267,13 @@ export default {
     },
     // 新增用户：
     add () {
-      this.dialogTitle = '录入学生信息'
-      this.dialogFormVisible = true
+      this.dialogTitle = '录入房东审核信息'
+      this.userTest = {}
+      this.dialogFormVisibleTest = true
     },
     addUser (formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          this.$http.post('students', this.user).then(() => {
-            // 清空录入框信息：
-            this.user = {}
-            // 隐藏录入框：
-            this.dialogFormVisible = false
-            this.$message({
-              message: '录入成功',
-              type: 'success'
-            })
-            this.page.current = 1
-            this.pageInation()
-          })
-        } else {
-          console.log('error submit!!')
-          this.dialogFormVisible = true
-          return false
-        }
-      })
+      this.dialogFormVisibleTest = false
+      this.$refs.handle.submit()
     },
     // 修改用户：
     edit (id) {
@@ -354,6 +391,41 @@ export default {
         message: messages,
         type: mtype
       })
+    },
+    handleUpload (event, file, fileList) {
+      let formData = new FormData()
+      console.log(this.userTest.user_id)
+      console.log(this.userTest.id_number)
+      console.log(file.raw)
+      formData.append('ipf', fileList[0].raw)
+      formData.append('ipr', fileList[1].raw)
+      formData.append('uid', 10)
+      this.$http({
+        url: 'insertLandlordInformation',
+        method: 'post',
+        data: formData,
+        params: {
+          landlordInformationDTO: this.userTest
+        },
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      this.pageInation()
+    },
+    handleSuccess (res, file, fileList) {
+      this.$notify.success({
+        title: '成功',
+        message: `图片上传成功`
+      })
+    },
+    handleRemove (file, fileList) {
+      console.log(file, fileList)
+      this.$refs.handle.clearFiles()
+    },
+    handlePictureCardPreview (file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
     }
   }
 
